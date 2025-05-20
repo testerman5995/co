@@ -1,0 +1,142 @@
+Module 2 -Activity 2 - Create a Website on S3
+
+
+ec2>
+select instance>
+copy public ip addr>
+
+
+
+details>
+show>
+download pem
+$ cd Downloads
+$ sudo rm -rf labsuser.pem
+$ sudo chmod 600 labsuser.pem
+$ sudo ssh -i labsuser.pem ec2-user@54.85.152.58
+	$ aws help
+	: q
+$ aws --version
+$ aws configure
+AWS Access Key ID [None]: sss
+AWS Secret Access Key [None]: sss
+Default region name [None]: us-east-1
+Default output format [None]: json
+
+
+
+aws academy>
+details>
+aws cli>
+show> 
+copy the text>
+
+$ sudo nano ~/.aws/credentials
+$ aws ec2 describe-instances
+	//provides list of instances
+: q
+
+$ aws iam list-users
+	//shows list f users
+
+
+$ aws s3api create-bucket --bucket cafestatic010 --region us-east-1  
+	//we are creating a bucket
+$ aws s3 ls
+	// shows the s3 bucket
+$ aws s3api put-bucket-ownership-controls --bucket cafestatic010 --ownership-controls "Rules=[{ObjectOwnership=BucketOwnerPreferred}]"
+	//"Rules=[{ObjectOwnership=BucketOwnerPreferred}]" = object ownership control
+	//owner of the bucket owns the object
+$ aws s3api put-public-access-block --bucket cafestatic010 --public-access-block-configuration "BlockPublicAcls=false,IgnorePublicAcls=false,BlockPublicPolicy=false,RestrictPublicBuckets=false" 
+	//ignoring all public blocks
+$ aws s3 website s3://cafestatic010 --index-document index.html
+	//adding the index.html
+	//copy host content into object
+	$ aws s3 cp . s3://cafestatic --recursive --acl public-read
+	
+$ ls
+sysops-activity-files
+$ cd sysops-activity-files
+$ ls
+static-website.tar.gz
+$ sudo tar xvzf static-website.tar.gz 
+$ ls
+css  images  index.html  static-website.tar.gz
+$ sudo rm static-website.tar.gz 
+$ ls
+$ aws s3 cp . s3://cafestatic010 --recursive --acl public-read
+	//makes public
+$ aws s3 ls cafestatic010 
+
+
+
+s3>
+click on bucket>
+properties>
+scroll down>
+open link>
+
+
+
+$ sudo nano index.html
+make changes to colour
+$ aws s3 cp . s3://cafestatic010 --recursive --acl public-read  
+
+
+
+$ cd
+$ sudo nano update-website.sh
+
+#!/bin/bash
+aws s3 cp ~/sysops-activity-files/ s3://cafestatic010 --recursive --acl public-read 
+
+$ ls
+$ ls -l
+$ sudo chmod +x update-website.sh
+$ ls -l
+$ ./update-website.sh
+$ sudo nano sysops-activity-files/index.html
+	//change the colour
+$ sudo nano update-website.sh
+
+#!/bin/bash
+aws s3 sync ~/sysops-activity-files/ s3://cafestatic010 --acl public-read 
+
+	//only updates the changed documents
+	
+$ ./update-website.sh
+
+
+
+refresh website>
+
+
+
+iam>
+users>
+open users>
+open policy>
+json>
+
+users>
+open users>
+security credentials>
+copy link>
+open incognito window>
+paste link>
+
+
+
+aws academy>
+details>
+copy iam user password>
+
+
+
+incognito window>
+username>
+awsS3user
+password>
+paste password>
+
+
