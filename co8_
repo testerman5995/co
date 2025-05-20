@@ -1,0 +1,172 @@
+Module 5 - Activity 5 - Working with AWS Lambda
+
+iam>
+roles>
+salesAnalysisReportDERole>
+AWSLambdaBasicRunRole>
+	//this code needs to be run to create lambda function
+AWSLambdaVPCAccessRunRole>
+	//permission to attach the elasctivc n/w interface to vpc
+roles>
+salesAnalysisReportRole  >
+AWSLambdaRole
+	//this code needs to be run to create lambda function
+AWSLambdaBasicRunRole>
+	//allows one lambda to invoke another lambda
+AmazonSSMReadOnlyAccess>
+	// read only role to grant lambda fn tor ead the drtials of app config form parameter store
+AmazonSNSFullAccess >	
+	//use sns to post a msg body, only the subscribers can access
+	
+	
+	
+ec2>
+mompopcafe.
+copy ip>
+
+browser>
+<ip>/mompopcafe
+
+
+
+
+lambda>
+layers> 	put up libraries for lambda fn
+create>
+Name>
+pymysql
+Upload a .zip file>
+upload zip that sir has shared, pymysql-0.9.3>
+Compatible runtimes >
+python 3.9>
+create>
+
+
+functions>
+create>
+fn name>
+salesAnalysisReportDataExtractor                        //name needs to be exactly this
+Runtime>
+python 3.9>
+Change default execution role>
+use existing role>
+Existing role>
+salesAnalysisReportDERole>
+create>
+
+upload from>
+zip>
+upload zip that sir has shared, salesAnalysisReportDataExtractor.zip>
+check the code>
+	//HANDLER TELLS WHICH FN SHOULD BE EXECTUED WHEN THE CODE IS TRIGGERED
+	//we need to add the handler name
+
+run setting>
+edit>
+Handler>
+salesAnalysisReportDataExtractor.lambda_handler
+save>
+
+function overview>
+layer>
+add a layer>
+custom layer>
+pymysql>
+version>
+1>
+add>
+
+test>
+Event name>
+MyTest
+Event JSON>
+	//paste the below code
+{
+
+  "dbUrl": "<value of /mompopcafe/dbUrl parameter>",
+
+  "dbName": "<value of /mompopcafe/dbName parameter>",
+
+  "dbUser": "<value of /mompopcafe/dbUser parameter>",
+
+  "dbPassword": "<value of /mompopcafe/dbPassword parameter>"
+
+}
+
+
+
+systems manager>
+paremeter store>
+/mompopcafe/dbUrl>
+value>
+copy url>
+and paste it to the code>
+do the same for the other constraints>
+
+
+
+
+come back to lambda tab>
+
+{
+
+  "dbUrl": "ec2-52-91-243-214.compute-1.amazonaws.com",
+
+  "dbName": "mom_pop_db",
+
+  "dbUser": "root",
+
+  "dbPassword": "re:St@rt!9"
+
+}
+
+
+save>
+test>
+details>
+
+
+	[ERROR] Runtime.ImportModuleError: Unable to import module 'salesAnalysisReportDataExtractor': No module named 'pymysql'
+	Traceback (most recent call last):
+	INIT_REPORT Init Duration: 331.77 ms	Phase: init	Status: error	Error Type: Runtime.ImportModuleError
+	INIT_REPORT Init Duration: 3003.35 ms	Phase: invoke	Status: timeout
+	START RequestId: c2f18a49-8ac5-43d3-a3fc-bffb6fb3c869 Version: $LATEST
+	2025-01-21T06:10:36.244Z c2f18a49-8ac5-43d3-a3fc-bffb6fb3c869 Task timed out after 3.09 seconds
+
+	END RequestId: c2f18a49-8ac5-43d3-a3fc-bffb6fb3c869
+	REPORT RequestId: c2f18a49-8ac5-43d3-a3fc-bffb6fb3c869	Duration: 3091.68 ms	Billed Duration: 3000 ms	Memory Size: 128 MB	Max Memory Used: 19 MB	
+
+
+	//there is no invoke security group on 3306
+	
+ec2>
+security>
+security grp>
+click on link>
+edit inbound rule>
+add rule>
+mysql/aurora>
+from anywhere ipv4>
+save>
+
+????????????????????????????????????????????????????
+
+
+
+
+
+
+
+
+Amazon Simple Notification Service>
+
+
+
+
+
+
+
+
+
+
+aws

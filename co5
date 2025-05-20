@@ -1,0 +1,59 @@
+Module 3 - Activity 3 - Troubleshoot Create Instance
+
+unmanaged db
+
+
+
+
+$ sudo rm -rf labsuser.pem
+
+download pem key
+
+$ sudo chmod 600 labsuser.pem 
+
+ec2>
+check cli host>
+copy public ip>
+
+$ sudo ssh -i labsuser.pem ec2-user@54.164.133.68
+
+$ aws --version
+$ aws configure
+
+AWS Access Key ID [None]: sss
+AWS Secret Access Key [None]: sss
+Default region name [None]: us-east-1
+Default output format [None]: json
+
+$ sudo nano ~/.aws/credentials 
+
+paste the cli command
+
+$ aws ec2 describe-instances
+
+$ ls
+$ cd sysops-activity-files
+$ ls
+$ cd starters
+$ ls
+
+	$ vi create-lamp-instance.sh 
+	<esc><shift>:q!
+	$ sudo cat create-lamp-instance-userdata.txt
+
+$ sudo nano create-lamp-instance.sh
+	there are some errors in the file
+	the region must be set to us-east-1
+	3 such cases
+	the opening port is mentioned 80, but typed in as 8080
+	change it to 80
+$ sudo cp create-lamp-instance.sh create-lamp-instance-backup.sh
+$ ls
+$ ls -l
+$ sudo ./create-lamp-instance.sh 
+$ ./create-lamp-instance.sh 
+
+new instance mom pop cafe is created
+in terminal we can find the link to mompopcafe site from the $ ./create-lamp-instance.sh  cmd
+open the link
+we an find the mompopcafe site

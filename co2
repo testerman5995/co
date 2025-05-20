@@ -1,0 +1,119 @@
+Module 2 - Lab 1 - Using AWS Systems Manager
+
+s/m manager can manage the config
+run cmd is used to run a set of instructions w/o logging via ssh
+
+
+
+
+
+ec2>
+managed instance(already created)>
+
+
+
+systems manager>
+fleet manager>
+managed node.
+node id>
+(already created)>
+
+account mgmt>
+set up inventory>
+target>
+Manually selecting instances>
+check the box>
+set up inventory>
+
+inventory>
+	managed set of instances are shown w/o ssh
+Corresponding managed instances>
+Instance ID>
+click on link>
+managed nodes>
+click on link>
+	shows all details
+inventory>
+	shows inventory
+	
+	
+run command>
+us east 1>
+run command>
+search bar>
+owner>
+owned by me>
+shows document(link)>
+click on link>
+content>
+	consists shell script
+run cmd>
+Instances>
+check the box>
+Target selection>
+choose manually>
+AWS command line interface command>
+	shows cmd sent to managed instance to run the cmd
+	
+	
+
+ec2>
+copy public ip>
+open in browser>
+should be blank>
+
+
+
+go back to systems manager>
+run>
+
+
+
+ec2>
+copy public ip>
+
+
+
+browser>
+http://<public ip>
+
+
+
+systems manager>
+parameter store>
+create parameter>
+parameter details>
+/dashboard/show-beta-features
+	we can store it in a hierarchical order
+desc>
+Display beta features
+value>
+true
+set parameter>
+
+
+
+browser>
+refresh>
+
+
+
+systems manager>
+Session Manager>
+start session>
+reason>
+session
+Target instances>
+select>
+start session>
+$ ls
+$ cd /var/www/html
+$ cat get-parameters.php
+	shows the code
+
+
+
+ec2>
+select instance>
+	iam role is needed to connect the different service across the same account
+we can see the iam role here

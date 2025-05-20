@@ -1,0 +1,169 @@
+Module 4 - Activity 4 - Route 53 Failover Routing 
+
+
+
+vpc>
+subnets>
+filer by>
+mompopcafe>
+
+
+
+ec2>
+mompopcafeinstance1>
+copy ip addr>
+
+browser>
+paste ip>
+paste <ip>/mompopcafe>
+
+
+mompopcafeinstance2>
+copy ip addr>
+
+browser>
+paste ip>
+paste <ip>/mompopcafe>
+
+
+
+systems manager>
+parameter store>
+/mompopcafe/showServerInfo
+edit>
+value>
+true
+	//value is false,so no info is shown of instance. set it to true to show
+	//we can alter other values like currency
+	
+
+
+r53>
+health check>
+create>
+name>
+primary-website-name
+IP address>
+paste the cafeinstance1 ip>
+path>
+mompopcafe
+advanced config>
+Request interval>
+fast>
+Failure threshold>
+2>
+create alarm>
+yes>
+Send notification to>
+new sns topic>
+Topic name>
+primary-website-health
+Recipient email addresses>
+xxx.msismpl2024@learner.manipal.edu
+create>
+select health check>
+monitoring>
+
+dashboard>
+
+hosted zone>
+	//created when domain name is input. here a dummy is automatically created. so it is shown here
+click on it>
+	//soa - start of authority --- authority and ttl detials
+	//ns - name server --- resololution of domain name to name server details
+create record>
+record name>
+www
+	//a type - direct the domain to ip adr
+	//cname - redirects another domain or sub domain
+record type>
+a type>
+value>
+paste mompopcafeinstance1 ip>
+ttl>
+15>
+Routing policy>
+failover>
+Failover record type>
+primary>
+Health check ID>
+select the health check>
+Record ID>
+primary1
+create>
+
+create record>
+record name>
+www
+record type>
+a type>
+value>
+paste mompopcafeinstance1 ip>
+ttl>
+15>
+Routing policy>
+failover>
+Failover record type>
+primary>
+Health check ID>
+select the health check>
+Record ID>
+primary1
+create>
+
+
+
+outlook>
+confirm subscription>
+
+
+
+r53>
+hosted zones>
+Record name>
+copy the record name of primary>
+paste in browser>
+<ip>/mompopcafe 
+
+
+r53>
+hosted zones>
+Record name>
+copy the record name of secondary>
+paste in browser>
+<ip>/mompopcafe 
+
+
+
+ec2>
+stop instance1>
+
+
+
+r53>
+health checks>
+refresh>
+shows unhealthy>
+
+
+
+outlook>
+//we get alarn notification
+
+
+
+browser>
+refresh>
+//we can see that the ip addr has changed to instance2 ip
+
+
+
+ec2>
+starting instance>
+
+
+
+r53>
+health checks>
+refresh>
+shows healthy>

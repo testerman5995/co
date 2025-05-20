@@ -1,0 +1,120 @@
+Module 3 - Lab 2 - Creating Amazon EC2 Instances
+
+ami id is different in different region
+
+ec2>
+instances>
+launch instance>
+name>
+bastian host
+ami>
+amazon linux 2023>
+instance type>
+	\\instance type is for cpu, ram, n/w performance, block storage
+t2.micro>
+key pair>
+vockey>
+n/w settings>
+create security grp>
+edit>
+vpc>
+select vpc>
+subnet>
+public subnet>
+auto assign ip>
+enable>
+sg name>
+bastian sg
+advanced details>
+iam instance profile>
+bastian role>
+create>
+
+copy the public ip
+
+
+
+$ sudo rm -rf labsuser.pem
+
+download pem key
+
+$ sudo chmod 600 labsuser.pem 
+$ sudo ssh -i labsuser.pem ec2-user@44.203.206.167
+
+$ aws --version
+$ aws configure
+
+AWS Access Key ID [None]: sss
+AWS Secret Access Key [None]: sss
+Default region name [None]: us-east-1
+Default output format [None]: json
+
+$ sudo nano ~/.aws/credentials 
+
+paste the cli command
+
+$ aws ec2 describe-instances
+
+	
+	//Get token
+$ TOKEN=$(curl --request PUT "http://169.254.169.254/latest/api/token" --header "X-aws-ec2-metadata-token-ttl-seconds: 21600")
+
+	//Set the Region
+$ AZ=$(curl --write-out "\n" --request GET "http://169.254.169.254/latest/meta-data/placement/availability-zone" --header "X-aws-ec2-metadata-token: $TOKEN")
+$ export AWS_DEFAULT_REGION=${AZ::-1}
+
+	//Obtain latest Linux AMI
+$ AMI=$(aws ssm get-parameters --names /aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2 --query 'Parameters[0].[Value]' --output text)
+$ echo $AMI
+
+$ SUBNET=$(aws ec2 describe-subnets --filters 'Name=tag:Name,Values=Public Subnet' --query Subnets[].SubnetId --output text)
+$ echo $SUBNET
+
+$ SG=$(aws ec2 describe-security-groups --filters Name=group-name,Values=WebSecurityGroup --query SecurityGroups[].GroupId --output text)
+$ echo $SG
+
+$ wget https://aws-tc-largeobjects.s3.amazonaws.com/ILT-TF-200-ACSOPS-1/lab-2-ec2-linux/UserData.txt
+
+$ INSTANCE=$(\
+aws ec2 run-instances \
+--image-id $AMI \
+--subnet-id $SUBNET \
+--security-group-ids $SG \
+--user-data file:///home/ec2-user/UserData.txt \
+--instance-type t2.micro \
+--tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=Web Server}]' \
+--query 'Instances[*].InstanceId' \
+--output text \
+)
+
+	//entire is one single cmd
+	
+$ echo $INSTANCE
+
+
+$ aws ec2 describe-instances --instance-ids $INSTANCE
+
+	//to directly check the status w/o going to mgmt console
+$ aws ec2 describe-instances --instance-ids $INSTANCE --query 'Reservations[].Instances[].State.Name' --output text
+
+$ aws ec2 describe-instances --instance-ids $INSTANCE --query Reservations[].Instances[].PublicDnsName --output text
+
+
+we server is created
+copy thepublic ip>
+new tab in terminal>
+$ sudo ssh -i labsuser.pem ec2-user@44.197.208.24
+
+not logging in
+ec2>
+instances>
+web server>
+security>
+open security grp link>
+inbound rule>
+ssh>
+anywhere>
+save>
+
+still one not logged in
+sir has given homework
