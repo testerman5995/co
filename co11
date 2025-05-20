@@ -1,0 +1,259 @@
+Module 8 - Activity 8 - Work with Amazon S3
+
+
+
+iam>
+users>
+mompopuser>
+AmazonS3ReadOnlyAccess> +
+
+User groups>
+mediaco>
+permissions>
+IAMUserChangePassword> +         
+mediaCoPolicy> +
+Users>
+mediaco>
+security credentials>
+create access key>
+Access key>
+cli>
+confirm>
+tag>
+mediacouser
+create>
+copy and save the secret access and access key id>
+	access
+	AKIAZFJUL7WD5KCAVIDX
+	secret access
+	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
+download csv file>
+done>
+
+
+
+ec2>
+cli host>
+
+details>
+show>
+download pem
+$ cd Downloads
+$ sudo rm -rf labsuser.pem
+$ sudo chmod 600 labsuser.pem
+$ sudo ssh -i labsuser.pem ec2-user@54.85.152.58
+	$ aws help
+	: q
+$ aws --version
+$ aws configure
+AWS Access Key ID [None]: sss
+AWS Secret Access Key [None]: sss
+Default region name [None]: us-east-1
+Default output format [None]: json
+
+
+
+aws academy>
+details>
+aws cli>
+show> 
+copy the text>
+
+$ sudo nano ~/.aws/credentials
+paste the text>
+
+
+
+$ aws s3 mb s3://mompopcafe-cdc010 --region us-east-1
+$ aws s3 ls
+$ ls
+	initial-images  initial-images.tar.gz  new-images  new-images.tar.gz
+$ aws s3 syn ./intial-images s3://mompopcafe-cdc010/images
+$ aws s3 sync ./initial-images s3://mompopcafe-cdc010/images
+$ aws s3 ls s3://mompopcafe-cdc010/images/ --human-readable --summarize
+
+
+
+--login to mgmt console as mediaco user
+
+copy 12 digit account id from top right dropdown>
+
+
+--incognito window
+aws.amazon.com/console
+
+login>
+Account ID>
+629859417479
+iam username>
+mediacouser
+p/w>
+Training1!
+
+
+s3>
+mompopcafe-cdc010>
+images/>
+	upload>
+	add files>
+	upload img>
+	delete uploaded image
+	//we can see that upload and delete operation is allowed 
+	
+
+
+
+--go back to main mgmt console
+
+sns>
+topics>
+create topics>
+Details>
+type>
+standard>
+name>
+snstopic
+display name>
+snstopic
+create>
+
+
+topic>
+snstopic>
+copy arn>
+paste it for code below for resources>
+provide appropriate bucket name for anrlike for code below>
+
+topics>
+access policy>
+edit>
+access policy>
+paste the below>
+
+
+{
+
+  "Version": "2008-10-17",
+
+  "Id": "S3PublishPolicy",
+
+  "Statement": [
+
+    {
+
+      "Sid": "AllowPublishFromS3",
+
+      "Effect": "Allow",
+
+      "Principal": {
+
+        "Service": "s3.amazonaws.com"
+
+      },
+
+      "Action": "SNS:Publish",
+
+      "Resource": "arn:aws:sns:us-east-1:629859417479:snstopic",
+
+      "Condition": {
+
+        "ArnLike": {
+
+          "aws:SourceArn": "arn:aws:s3:*:*:mompopcafe-cdc010"
+
+        }
+
+      }
+
+    }
+
+  ]
+
+}
+
+
+
+
+--terminal
+
+$ sudo nano s3EventNotification.json
+
+{
+  "TopicConfigurations": [
+
+    {
+
+      "TopicArn": "<ARN of s3NotificationTopic>",
+
+      "Events": ["s3:ObjectCreated:*","s3:ObjectRemoved:*"],
+
+      "Filter": {
+
+        "Key": {
+
+          "FilterRules": [
+
+            {
+
+              "Name": "prefix",
+
+              "Value": "images/"
+
+            }
+
+          ]
+
+        }
+
+      }
+
+    }
+
+  ]
+
+}
+
+
+
+
+
+sns>
+subscription>
+create>
+details>
+topic arn>
+select arn>
+protocol>
+email>
+xxx.msismpl2024@learner.manipal.edu
+create>
+go to mail and confirm subscription>
+
+
+
+$ aws s3api put-bucket-notification-configuration --bucket mompopcafe-cdc010 --notification-configuration file://s3EventNotification.json
+$ aws configure
+AWS Access Key ID [****************OLAY]: ss
+AWS Secret Access Key [****************CgxJ]: ss
+Default region name [us-east-1]: us-east-1
+Default output format [json]: json
+
+$ sudo nano ~/.aws/credentials 
+
+[default]
+aws_access_key_id = AKIAZFJUL7WD5KCAVIDX
+aws_secret_access_key = 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
+
+//paste the access and secret access key attained while logging on to the mgmt console
+
+
+$ aws s3api put-object --bucket mompopcafe-cdc010 --key images/Caramel-Delight.jpg --body ~/new-images/Caramel-Delight.jpg
+// image is uploaded
+$ aws s3api get-object --bucket mompopcafe-cdc010 --key images/Donuts.jpg Donuts.jpg
+// image is downloaded
+$ aws s3api delete-object --bucket mompopcafe-cdc010 --key images/Strawberry-Tarts.jpg
+// image is deleted
+$ aws s3api put-object-acl --bucket mompopcafe-cdc010 --key images/Donuts.jpg --acl public-read
+//role not specified, so error occurs
+
+

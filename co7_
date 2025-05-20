@@ -1,0 +1,222 @@
+sysops
+run instance
+usr data file
+launch ec2 
+ph stess util
+snashot ec2 - ami
+load balancer
+target grp 
+autoscaling launch template
+
+
+Module 4 - Lab 3 - Using Auto Scaling
+
+launch template is necessary to launch auto scaling grp
+
+
+
+
+ec2>
+select instance>
+copy public ip addr>
+
+
+
+details>
+show>
+download pem
+$ cd Downloads
+$ sudo rm -rf labsuser.pem
+$ sudo chmod 600 labsuser.pem
+$ sudo ssh -i labsuser.pem ec2-user@54.85.152.58
+	$ aws help
+	: q
+$ aws --version
+$ aws configure
+AWS Access Key ID [None]: sss
+AWS Secret Access Key [None]: sss
+Default region name [None]: us-east-1
+Default output format [None]: json
+
+
+
+aws academy>
+details>
+aws cli>
+show> 
+copy the text>
+
+
+
+$ sudo nano ~/.aws/credentials
+$ aws ec2 describe-instances
+$ ls
+$ sudo cat UserData.txt
+$ aws ec2 run-instances --key-name vockey --instance-type t2.micro --image-id <AmiId> --user-data file:///home/ec2-user/UserData.txt --security-group-ids <HTTPAccess> --subnet-id <SubnetId> --associate-public-ip-address --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=WebServerBaseImage}]' --output text --query 'Instances[*].InstanceId'
+
+//the ami id, security grp id(http access), subnet id needs to be changed
+//this can be found on details of aws academy
+
+copy the instance id>
+
+
+
+ec2>
+WebServerBaseImage>
+copy public ip>
+
+
+
+browser>
+paste the ip>
+<ip>/index.php
+
+
+
+	ec2>
+	web
+	copy the instance
+
+
+
+
+$ aws ec2 create-image --name WebServer --instance-id <NEW-INSTANCE-ID>
+
+
+
+
+ec2>
+
+load balancer
+create
+Application Load Balancer
+MyELB
+Network mapping
+VPC
+lab vpc>
+Availability Zones
+select both
+us-east-1a
+public subnet 
+us-east-1b 
+public subnet
+
+Listeners and routing
+create target grp, open in new tab>
+
+Target group name>
+
+mytargetgroup
+
+
+
+Health checks
+Health check path
+/index.php
+
+Advanced health check settings
+
+Healthy threshold
+2
+
+next
+
+create
+
+Listeners and routing
+
+refresh and select the target grp
+
+
+
+
+
+
+
+
+
+
+
+
+launch template
+create>
+
+
+myasgtemplate
+
+my ami
+instance type
+t2.micro
+key pair 
+vockey
+
+n/w setings
+pvt subnet 1
+Common security groups
+http access
+launch
+
+
+
+auto scaling
+myautoscalinggroup
+
+
+
+launch template>
+Name>
+myasgtemplate
+launch template>
+myasgtemplate>
+next>
+
+network>
+vpc>
+lab vpc>
+Availability Zones and subnets>
+add all pvt subnet>
+next>
+
+Load balancing>
+attach existing lb>
+Existing load balancer target groups>
+mytargetgroup>
+Health checks>
+check Turn on Elastic Load Balancing health checks>
+next>
+
+Desired capacity>
+2>
+Scaling>
+Min desired capacity>
+2>
+Max desired capacity>
+4>
+Automatic scaling>
+Target tracking scaling policy>
+Target value>
+40>
+Instance warmup>
+120>
+Additional settings>
+Monitoring>
+check Enable group metrics collection within CloudWatch>
+next>
+
+next>
+
+Tags>
+Name>
+WebServer
+next>
+create>
+
+
+
+
+ec2>
+2 new instances>
+
+
+load balancers
+
