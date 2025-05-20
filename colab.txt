@@ -1,0 +1,39 @@
+1.	Café business Client requires a solution for hosting static website as they wish to promote café products to their customers. 
+
+2.	Cafe business client wishes to get daily sales report of products sold in the café via an Email. Client is wishing to have a managed or server less approach to implement the same. As a Cloud operations engineer implement a solution to the above business problem.  
+
+
+1-9 
+1 normal static website 
+2 lambda function
+
+
+1.	Café business Client requires a solution for hosting dynamic website as their users can pre-order café products using unmanaged database solution. As a cloud operation engineer provide a solution for implementing the business needs. Also provide solution to migrate to managed databases.  
+
+2.	The cafe business client wishes to update their website with new recipes, images, and videos. They have hired an external media company to create these images and videos. The client requires a secure file sharing mechanism to transfer data from the external company to the business owner. Additionally, they want to be notified immediately when images are added, updated, or deleted. As a cloud operations engineer, propose a solution to meet the business's needs.
+
+
+10-19 
+1 Amazon RDS 
+2 working with s3 ( module 8)
+
+
+1.	Café business client wishes to have an isolated networking space for provisioning services and infrastructure for his banking dynamic application. Client also wishes to deploy front-end of his application open to public and needs a private and secure environment for his database layer. Based on the requirements, VPC is created with public subnets hosting web server and private subnets with database servers. 
+Customers of café business are not able to access site and administrators are not able to login to web server via SSH. As a Cloud operations engineer provide the steps that you follow to troubleshoot the issues
+
+2.	Given a cafe business application deployed on a web server configured to generate access and error logs, and the requirement for the cafe business client to monitor application and web server metrics, how would you design a monitoring and alerting system? Specifically, outline the steps you would take to ensure timely alerts to administrators when the application becomes unreachable to clients. Additionally, detail your approach to automatically backing up the EBS volume of the web server to take a snapshot in the event the web server transitions from a running state to a stopped state.
+
+
+Next 
+1 VPC ( idu solpa chalenge lab ide ) nodko 
+2 cloud trail
+
+
+1.	Café business Client requires a solution for hosting dynamic website as their users can pre-order café products using unmanaged database solution. As a cloud operation engineer provide a solution for implementing the business needs. Also provide solution to migrate to managed databases.
+
+2.	Suppose the cafe business application's web server is compromised by an unauthorized user within the account, who adds a new rule to the security group and updates images of the web application. The client expresses the need to audit actions performed on resources to identify vulnerabilities and details. How would you approach auditing these actions, and what steps would you propose to prevent similar unauthorized access in the future?  
+
+
+Last 
+1 Amazon rds 
+2 (audit) so same cloud trail
